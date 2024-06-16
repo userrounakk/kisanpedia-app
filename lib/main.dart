@@ -23,6 +23,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Comfortaa',
         useMaterial3: true,
         primarySwatch: theme,
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.transparent,
+        ),
       ),
       initialRoute: Splash.routeName,
       getPages: [
