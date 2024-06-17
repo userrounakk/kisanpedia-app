@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
+import 'package:kisanpedia_app/models/plant.dart';
+import 'package:kisanpedia_app/pages/dashboard-pages/home.dart';
+import 'package:kisanpedia_app/pages/dashboard-pages/plants.dart';
+import 'package:kisanpedia_app/services/api.dart';
 import 'package:kisanpedia_app/widgets/text.dart';
 
 class Dashboard extends StatefulWidget {
@@ -13,16 +16,39 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
+  List<Plant> plants = [];
+  bool plantError = false;
+
+  @override
+  void initState() {
+    _loadPlantData();
+    super.initState();
+  }
+
+  Future<void> _loadPlantData() async {
+    try {
+      var res = await Api.getPlants();
+      setState(() {
+        plants = plantResponseFromJson(res.body).plant;
+      });
+    } catch (e) {
+      setState(() {
+        plantError = true;
+      });
+    }
+  }
+
   int currentPageIndex = 0;
-  List<Widget> pages = const [
-    Text("Home"),
-    Text("Plants"),
-    Text("Sellers"),
-    Text("Stores"),
-    Text("Contact"),
-  ];
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = [
+      Home(plants: plants, hasError: plantError),
+      PlantPage(plants: plants, hasError: plantError),
+      const Text("Sellers"),
+      const Text("Stores"),
+      const Text("Contact"),
+    ];
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -30,11 +56,9 @@ class _DashboardState extends State<Dashboard> {
         leading: Image.asset(Images.logo, height: 40),
         centerTitle: false,
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: pages[currentPageIndex],
-        ),
+      body: IndexedStack(
+        index: currentPageIndex,
+        children: pages,
       ),
       bottomNavigationBar: BottomNavigationBar(
         iconSize: 32,

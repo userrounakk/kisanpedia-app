@@ -6,4 +6,12 @@ class Images {
   static onboarding(image) {
     return 'assets/images/onboarding/$image.png';
   }
+
+  static const sliderImages = [
+    'assets/images/sliders/img1.png',
+    'assets/images/sliders/img2.png',
+    'assets/images/sliders/img3.png',
+    'assets/images/sliders/img4.png',
+    'assets/images/sliders/img5.png',
+  ];
 }
