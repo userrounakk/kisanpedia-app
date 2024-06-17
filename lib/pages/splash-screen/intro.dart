@@ -45,7 +45,8 @@ class _IntroScreenState extends State<IntroScreen> {
     setState(() {
       sec++;
     });
-    if (sec == 10) {
+    // change the sec value to 10
+    if (sec == 3) {
       if (preferences.containsKey("onboardingCompleted")) {
         redirect = Dashboard.routeName;
       }

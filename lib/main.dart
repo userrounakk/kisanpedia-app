@@ -23,6 +23,10 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Comfortaa',
         useMaterial3: true,
         primarySwatch: theme,
+        canvasColor: Colors.white,
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Colors.white,
+        ),
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: Colors.transparent,
         ),
