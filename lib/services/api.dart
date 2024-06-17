@@ -6,4 +6,8 @@ class Api {
   static Future getPlants() {
     return http.get(Uri.parse('$baseUrl/plants'));
   }
+
+  static Future getSellers() {
+    return http.get(Uri.parse('$baseUrl/sellers'));
+  }
 }

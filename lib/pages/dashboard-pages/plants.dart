@@ -14,23 +14,23 @@ class PlantPage extends StatefulWidget {
 }
 
 class _PlantPageState extends State<PlantPage> {
-  List<Plant> plantsCopy = [];
+  late List<Plant> filteredPlants;
   TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
-    plantsCopy = List.from(widget.plants);
+    filteredPlants = List.from(widget.plants);
     super.initState();
   }
 
   void filterPlants() {
     var searchValue = searchController.text;
     if (searchValue.isEmpty) {
-      plantsCopy = List.from(widget.plants);
+      filteredPlants = List.from(widget.plants);
       setState(() {});
       return;
     }
-    plantsCopy = widget.plants.where((plant) {
+    filteredPlants = widget.plants.where((plant) {
       return plant.name.toLowerCase().contains(searchValue.toLowerCase());
     }).toList();
     setState(() {});
@@ -76,15 +76,21 @@ class _PlantPageState extends State<PlantPage> {
                           ? const SliverFillRemaining(
                               child: Center(child: CircularProgressIndicator()),
                             )
-                          : SliverList(
-                              delegate: SliverChildBuilderDelegate(
-                                (context, index) {
-                                  return _buildPlantItem(
-                                      context, plantsCopy[index]);
-                                },
-                                childCount: plantsCopy.length,
-                              ),
-                            ),
+                          : filteredPlants.isEmpty
+                              ? const SliverFillRemaining(
+                                  child: Center(
+                                    child: Text('No plants found'),
+                                  ),
+                                )
+                              : SliverList(
+                                  delegate: SliverChildBuilderDelegate(
+                                    (context, index) {
+                                      return _buildPlantItem(
+                                          context, filteredPlants[index]);
+                                    },
+                                    childCount: filteredPlants.length,
+                                  ),
+                                ),
                 ),
               ],
             ),

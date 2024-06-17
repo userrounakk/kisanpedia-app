@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
+import 'package:get/get.dart';
+import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/helpers/spacer.dart';
+import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
+import 'package:kisanpedia_app/services/api.dart';
 import 'package:kisanpedia_app/widgets/text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,11 +25,21 @@ class _IntroScreenState extends State<IntroScreen> {
   bool timerRunning = true;
   int sec = 0;
   String redirect = OnboardingScreen.routeName;
+  final PlantController plantController = Get.find<PlantController>();
   @override
   void initState() {
     updateTimer();
+    _loadPlantData();
     super.initState();
-    // checkRedirect();
+  }
+
+  Future<void> _loadPlantData() async {
+    try {
+      var res = await Api.getPlants();
+      plantController.setPlants(plantResponseFromJson(res.body).plant);
+    } catch (e) {
+      plantController.setError(true);
+    }
   }
 
   void checkRedirect() async {

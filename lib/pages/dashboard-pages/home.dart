@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
@@ -66,9 +68,19 @@ class Home extends StatelessWidget {
                   'Plants',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                onTap: () {
-                  Navigator.pushNamed(context, '/plants');
-                },
+                trailing: TextButton(
+                  child: const Text(
+                    'View All',
+                    style: TextStyle(
+                      color: Colors.green,
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onPressed: () => Get.find<DashboardController>()
+                      .currentPageIndex
+                      .value = 1,
+                ),
               ),
               hasError
                   ? const Text(
