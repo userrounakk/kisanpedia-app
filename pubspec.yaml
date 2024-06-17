@@ -68,6 +68,7 @@ flutter:
     - assets/images/splash/
     - assets/images/onboarding/
     - assets/images/sliders/
+    - assets/images/placeholders/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

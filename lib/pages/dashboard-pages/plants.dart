@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
+import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -126,8 +127,9 @@ class _PlantPageState extends State<PlantPage> {
                     child: CachedNetworkImage(
                       imageUrl: Api.baseUrl + plant.image,
                       placeholder: (context, url) =>
-                          const CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
+                          Image.asset(Images.loadingGif),
+                      errorWidget: (context, url, error) =>
+                          Image.asset(Images.placeHolder("plant")),
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,

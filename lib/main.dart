@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
+import 'package:kisanpedia_app/controllers/seller_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
@@ -11,6 +12,7 @@ import 'package:kisanpedia_app/pages/splash-screen/splash.dart';
 void main() {
   Get.put(DashboardController());
   Get.put(PlantController());
+  Get.put(SellerController());
   runApp(const MyApp());
 }
 

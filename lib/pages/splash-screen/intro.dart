@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
+import 'package:kisanpedia_app/controllers/seller_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/helpers/spacer.dart';
 import 'package:kisanpedia_app/models/plant.dart';
+import 'package:kisanpedia_app/models/seller.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
 import 'package:kisanpedia_app/services/api.dart';
@@ -23,13 +25,25 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   bool timerRunning = true;
+  bool dataFetched = false;
   int sec = 0;
   String redirect = OnboardingScreen.routeName;
   final PlantController plantController = Get.find<PlantController>();
+  final SellerController sellerController = Get.find<SellerController>();
   @override
   void initState() {
+    // _loadPlantData();
+    // _loadSellerData();
+    // updateTimer();
     updateTimer();
-    _loadPlantData();
+    Future.wait([_loadPlantData(), _loadSellerData()]).then((_) {
+      setState(() {
+        dataFetched = true;
+        if (Get.isBottomSheetOpen ?? false) {
+          Get.back();
+        }
+      });
+    });
     super.initState();
   }
 
@@ -42,14 +56,13 @@ class _IntroScreenState extends State<IntroScreen> {
     }
   }
 
-  void checkRedirect() async {
-    final preferences = await SharedPreferences.getInstance();
-    if (preferences.containsKey("onboardingCompleted")) {
-      setState(() {
-        redirect = Dashboard.routeName;
-      });
+  Future<void> _loadSellerData() async {
+    try {
+      var res = await Api.getSellers();
+      sellerController.setSellers(sellerResponseFromJson(res.body).seller);
+    } catch (e) {
+      sellerController.setError(true);
     }
-    return;
   }
 
   void updateTimer() async {
@@ -60,6 +73,49 @@ class _IntroScreenState extends State<IntroScreen> {
     });
     // change the sec value to 10
     if (sec == 3) {
+      if (!dataFetched) {
+        Get.bottomSheet(
+          Container(
+            color: Colors.white,
+            height: 400,
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.signal_wifi_statusbar_connected_no_internet_4,
+                  size: 100,
+                  color: Colors.red,
+                ),
+                const Text(
+                  "Slow internet Connection.",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Please wait for a while.",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Image.asset(Images.loadingGif, height: 100)
+              ],
+            ),
+          ),
+          isDismissible: false,
+          enableDrag: false,
+        );
+      }
       if (preferences.containsKey("onboardingCompleted")) {
         redirect = Dashboard.routeName;
       }

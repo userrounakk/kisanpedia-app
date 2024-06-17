@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
+import 'package:kisanpedia_app/controllers/seller_controller.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
@@ -21,8 +22,16 @@ class Dashboard extends StatelessWidget {
     final plantController = Get.find<PlantController>();
     List<Plant> plants = plantController.plants;
     bool plantError = plantController.plantError.value;
+    // seller controller variables.
+    final sellerController = Get.find<SellerController>();
+    List<Seller> sellers = sellerController.sellers;
+    bool sellerError = sellerController.sellerError.value;
     List<Widget> pages = [
-      Home(plants: plants, hasError: plantError),
+      Home(
+          plants: plants,
+          plantHasError: plantError,
+          sellers: sellers,
+          sellerHasError: sellerError),
       PlantPage(plants: plants, hasError: plantError),
       const Text("Sellers"),
       const Text("Stores"),
