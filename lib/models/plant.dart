@@ -21,7 +21,7 @@ class PlantResponse {
 
   Map<String, dynamic> toJson() => {
         "success": success,
-        "plant": List<dynamic>.from(plant.map((x) => x.toJson())),
+        "data": List<dynamic>.from(plant.map((x) => x.toJson())),
       };
 }
 
