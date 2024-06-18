@@ -9,6 +9,7 @@ import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
 import 'package:kisanpedia_app/models/store.dart';
+import 'package:kisanpedia_app/pages/dashboard-pages/contact.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/home.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/plants.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/sellers.dart';
@@ -43,7 +44,7 @@ class Dashboard extends StatelessWidget {
       PlantPage(plants: plants, hasError: plantError),
       SellerPage(sellers: sellers, hasError: sellerError),
       StorePage(stores: stores, hasError: storeError),
-      const Text("Contact"),
+      const ContactPage(),
     ];
     return Scaffold(
       appBar: AppBar(
