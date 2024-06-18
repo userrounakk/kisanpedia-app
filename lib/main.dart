@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/controllers/seller_controller.dart';
+import 'package:kisanpedia_app/controllers/store_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
 import 'package:kisanpedia_app/pages/no_internet.dart';
@@ -14,6 +15,7 @@ void main() {
   Get.put(DashboardController());
   Get.put(PlantController());
   Get.put(SellerController());
+  Get.put(StoreController());
   runApp(const MyApp());
 }
 

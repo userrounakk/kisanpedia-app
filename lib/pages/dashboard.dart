@@ -3,13 +3,16 @@ import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/controllers/seller_controller.dart';
+import 'package:kisanpedia_app/controllers/store_controller.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
+import 'package:kisanpedia_app/models/store.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/home.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/plants.dart';
 import 'package:kisanpedia_app/pages/dashboard-pages/sellers.dart';
+import 'package:kisanpedia_app/pages/dashboard-pages/stores.dart';
 import 'package:kisanpedia_app/widgets/text.dart';
 
 class Dashboard extends StatelessWidget {
@@ -27,6 +30,10 @@ class Dashboard extends StatelessWidget {
     final sellerController = Get.find<SellerController>();
     List<Seller> sellers = sellerController.sellers;
     bool sellerError = sellerController.sellerError.value;
+    // store controller variables.
+    final storeController = Get.find<StoreController>();
+    List<Store> stores = storeController.stores;
+    bool storeError = storeController.storeError.value;
     List<Widget> pages = [
       Home(
           plants: plants,
@@ -35,7 +42,7 @@ class Dashboard extends StatelessWidget {
           sellerHasError: sellerError),
       PlantPage(plants: plants, hasError: plantError),
       SellerPage(sellers: sellers, hasError: sellerError),
-      const Text("Stores"),
+      StorePage(stores: stores, hasError: storeError),
       const Text("Contact"),
     ];
     return Scaffold(

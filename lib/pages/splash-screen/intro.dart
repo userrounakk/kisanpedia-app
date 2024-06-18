@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/controllers/seller_controller.dart';
+import 'package:kisanpedia_app/controllers/store_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
@@ -11,6 +12,7 @@ import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/helpers/spacer.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
+import 'package:kisanpedia_app/models/store.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
 import 'package:kisanpedia_app/pages/no_internet.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
@@ -34,11 +36,13 @@ class _IntroScreenState extends State<IntroScreen> {
   String redirect = OnboardingScreen.routeName;
   final PlantController plantController = Get.find<PlantController>();
   final SellerController sellerController = Get.find<SellerController>();
+  final StoreController storeController = Get.find<StoreController>();
   @override
   void initState() {
     _isMounted = true;
     updateTimer();
-    Future.wait([_loadPlantData(), _loadSellerData()]).then((_) {
+    Future.wait([_loadPlantData(), _loadSellerData(), _loadStoreData()])
+        .then((_) {
       if (_isMounted) {
         setState(() {
           dataFetched = true;
@@ -58,7 +62,6 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   Future<void> _loadPlantData() async {
-    debugPrint("Loading plant data");
     try {
       var res = await Api.getPlants();
       plantController.setPlants(plantResponseFromJson(res.body).plant);
@@ -76,13 +79,22 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 
   Future<void> _loadSellerData() async {
-    debugPrint("Loading seller data");
     try {
       var res = await Api.getSellers();
       sellerController.setSellers(sellerResponseFromJson(res.body).seller);
       sellerController.setError(false);
     } catch (e) {
       sellerController.setError(true);
+    }
+  }
+
+  Future<void> _loadStoreData() async {
+    try {
+      var res = await Api.getStores();
+      storeController.setStores(storeResponseFromJson(res.body).stores);
+      storeController.setError(false);
+    } catch (e) {
+      storeController.setError(true);
     }
   }
 
@@ -94,7 +106,7 @@ class _IntroScreenState extends State<IntroScreen> {
         sec++;
       });
     }
-    // change the sec value to 10
+    // TODO: change the sec value to 10
     if (sec == 3) {
       if (!dataFetched) {
         Get.bottomSheet(
