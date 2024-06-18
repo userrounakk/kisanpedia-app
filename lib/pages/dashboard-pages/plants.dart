@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
+import 'package:kisanpedia_app/pages/detail-pages/plant_detail.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -115,7 +117,7 @@ class _PlantPageState extends State<PlantPage> {
           ),
           child: InkWell(
             onTap: () {
-              // TODO: Navigate to plant detail page
+              Get.toNamed(PlantDetail.routeName, arguments: plant);
             },
             child: Padding(
               padding: const EdgeInsets.all(16.0),

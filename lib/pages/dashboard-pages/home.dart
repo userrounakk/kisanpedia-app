@@ -6,6 +6,7 @@ import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
+import 'package:kisanpedia_app/pages/detail-pages/plant_detail.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -105,39 +106,50 @@ class Home extends StatelessWidget {
                             shrinkWrap: true,
                             children: plants.map(
                               (plant) {
-                                return Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: CachedNetworkImage(
-                                            imageUrl: Api.baseUrl + plant.image,
-                                            placeholder: (context, url) =>
-                                                Image.asset(Images.loadingGif),
-                                            errorWidget: (context, url,
-                                                    error) =>
-                                                Image.asset(Images.placeHolder(
-                                                    "plant")),
-                                            width: screenHeight * .12,
-                                            height: screenHeight * .12,
-                                            fit: BoxFit.cover,
+                                return InkWell(
+                                  onTap: () {
+                                    Get.toNamed(PlantDetail.routeName,
+                                        arguments: plant);
+                                    // dashboardController.currentPageIndex.value =
+                                    //     1;
+                                  },
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  Api.baseUrl + plant.image,
+                                              placeholder: (context, url) =>
+                                                  Image.asset(
+                                                      Images.loadingGif),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Image.asset(
+                                                          Images.placeHolder(
+                                                              "plant")),
+                                              width: screenHeight * .12,
+                                              height: screenHeight * .12,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          plant.name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            plant.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );
@@ -179,41 +191,45 @@ class Home extends StatelessWidget {
                             shrinkWrap: true,
                             children: sellers.map(
                               (seller) {
-                                return Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Column(
-                                      children: [
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                Api.baseUrl + seller.image,
-                                            placeholder: (context, url) =>
-                                                Image.asset(Images.loadingGif),
-                                            errorWidget: (context, url,
-                                                    error) =>
-                                                Image.asset(Images.placeHolder(
-                                                    "seller")),
-                                            width: screenHeight * .12,
-                                            height: screenHeight * .12,
-                                            fit: BoxFit.cover,
+                                return InkWell(
+                                  child: Card(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Column(
+                                        children: [
+                                          ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            child: CachedNetworkImage(
+                                              imageUrl:
+                                                  Api.baseUrl + seller.image,
+                                              placeholder: (context, url) =>
+                                                  Image.asset(
+                                                      Images.loadingGif),
+                                              errorWidget:
+                                                  (context, url, error) =>
+                                                      Image.asset(
+                                                          Images.placeHolder(
+                                                              "seller")),
+                                              width: screenHeight * .12,
+                                              height: screenHeight * .12,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          seller.name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w600,
+                                          const SizedBox(
+                                            height: 10,
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            seller.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

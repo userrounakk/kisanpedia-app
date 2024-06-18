@@ -4,6 +4,7 @@ import 'package:kisanpedia_app/controllers/dashboard_controller.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/controllers/seller_controller.dart';
 import 'package:kisanpedia_app/controllers/store_controller.dart';
+import 'package:kisanpedia_app/helpers/constants/bottom_nav.dart';
 import 'package:kisanpedia_app/helpers/constants/text.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
@@ -37,9 +38,9 @@ class Dashboard extends StatelessWidget {
     bool storeError = storeController.storeError.value;
     List<Widget> pages = [
       Home(
-          plants: plants,
+          plants: plants.take(10).toList(),
           plantHasError: plantError,
-          sellers: sellers,
+          sellers: sellers.take(10).toList(),
           sellerHasError: sellerError),
       PlantPage(plants: plants, hasError: plantError),
       SellerPage(sellers: sellers, hasError: sellerError),
@@ -66,28 +67,7 @@ class Dashboard extends StatelessWidget {
           currentIndex: dashboardController.currentPageIndex.value,
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Colors.grey,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.yard),
-              label: "Plants",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Sellers",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.store),
-              label: "Stores",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.phone),
-              label: "Contact",
-            ),
-          ],
+          items: bottomNavItems,
         ),
       ),
     );
