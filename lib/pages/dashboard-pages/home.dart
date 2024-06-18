@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
     }).toList();
     return SingleChildScrollView(
       child: SizedBox(
-        height: screenHeight,
+        // height: screenHeight,
         width: screenWidth,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -97,7 +97,9 @@ class Home extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         )
                       : SizedBox(
-                          height: screenHeight * .175,
+                          height: screenHeight > 700
+                              ? screenHeight * .2
+                              : screenHeight * .3,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
@@ -119,8 +121,8 @@ class Home extends StatelessWidget {
                                                     error) =>
                                                 Image.asset(Images.placeHolder(
                                                     "plant")),
-                                            width: 80,
-                                            height: 80,
+                                            width: screenHeight * .12,
+                                            height: screenHeight * .12,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -169,7 +171,9 @@ class Home extends StatelessWidget {
                           child: CircularProgressIndicator(),
                         )
                       : SizedBox(
-                          height: screenHeight * .175,
+                          height: screenHeight > 700
+                              ? screenHeight * .2
+                              : screenHeight * .3,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             shrinkWrap: true,
@@ -192,8 +196,8 @@ class Home extends StatelessWidget {
                                                     error) =>
                                                 Image.asset(Images.placeHolder(
                                                     "seller")),
-                                            width: 80,
-                                            height: 80,
+                                            width: screenHeight * .12,
+                                            height: screenHeight * .12,
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -205,8 +209,9 @@ class Home extends StatelessWidget {
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w600),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                         ),
                                       ],
                                     ),
@@ -216,6 +221,9 @@ class Home extends StatelessWidget {
                             ).toList(),
                           ),
                         ),
+              const SizedBox(
+                height: 20,
+              ),
             ],
           ),
         ),
