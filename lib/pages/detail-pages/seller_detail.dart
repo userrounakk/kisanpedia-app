@@ -11,20 +11,33 @@ import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
-import 'package:kisanpedia_app/pages/detail-pages/seller_detail.dart';
+import 'package:kisanpedia_app/pages/detail-pages/plant_detail.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:kisanpedia_app/widgets/text.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class PlantDetail extends StatelessWidget {
-  PlantDetail({super.key});
-  static const routeName = '/plant-detail';
-  final Plant plant = Get.arguments ?? Get.find<PlantController>().plants[0];
-  final SellerController sellerController = Get.find<SellerController>();
-  List<Seller> filterSellers() {
-    final allSellers = sellerController.sellers;
-    return allSellers.where((seller) {
+class SellerDetail extends StatelessWidget {
+  SellerDetail({super.key});
+  static const routeName = '/seller-detail';
+  final Seller seller =
+      Get.arguments ?? Get.find<SellerController>().sellers[0];
+  final PlantController plantController = Get.find<PlantController>();
+  List<Plant> filterPlants() {
+    final allPlants = plantController.plants;
+    return allPlants.where((plant) {
       return seller.products.contains(plant.name);
     }).toList();
+  }
+
+  Future<void> _launchUrl(String url) async {
+    Uri uri = Uri.parse(url);
+    try {
+      if (!await launchUrl(uri)) {
+        throw 'Could not launch $uri';
+      }
+    } catch (e) {
+      Get.snackbar("Error loading Url.", "Please try again later.");
+    }
   }
 
   @override
@@ -32,7 +45,7 @@ class PlantDetail extends StatelessWidget {
     final dashboardController = Get.find<DashboardController>();
     final double screenHeight = Dimension.getHeight(context);
     final double screenWidth = Dimension.getWidth(context);
-    final sellers = filterSellers();
+    final plants = filterPlants();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -55,11 +68,11 @@ class PlantDetail extends StatelessWidget {
                   padding: const EdgeInsets.all(2),
                   margin: const EdgeInsets.all(20),
                   child: CachedNetworkImage(
-                    imageUrl: Api.baseUrl + plant.image,
+                    imageUrl: Api.baseUrl + seller.image,
                     placeholder: (context, url) =>
                         Image.asset(Images.loadingGif),
                     errorWidget: (context, url, error) => Image.asset(
-                      Images.placeHolder("plant"),
+                      Images.placeHolder("seller"),
                       fit: BoxFit.cover,
                     ),
                     width: screenHeight * .2,
@@ -69,19 +82,22 @@ class PlantDetail extends StatelessWidget {
                 ),
               ),
               Text(
-                plant.name,
+                seller.name,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10.0),
-              Text(
-                'MRP: Rs. ${plant.price}',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+              InkWell(
+                onTap: () => _launchUrl('tel:${seller.phoneNumber}'),
+                child: Text(
+                  'Phone. ${seller.phoneNumber}',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
               ),
               const SizedBox(height: 20.0),
@@ -97,7 +113,7 @@ class PlantDetail extends StatelessWidget {
                     spacing: 10,
                     runSpacing: 10,
                     clipBehavior: Clip.hardEdge,
-                    children: plant.location
+                    children: seller.location
                         .map((location) => Container(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
@@ -117,7 +133,7 @@ class PlantDetail extends StatelessWidget {
               ),
               const SizedBox(height: 30.0),
               const Text(
-                "Description:",
+                "Description :",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -125,22 +141,22 @@ class PlantDetail extends StatelessWidget {
               ),
               const SizedBox(height: 5.0),
               Text(
-                plant.description,
+                seller.description,
                 style: const TextStyle(fontSize: 14),
               ),
               const SizedBox(height: 30.0),
               const Text(
-                "Sellers:",
+                "Plants:",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const SizedBox(height: 10.0),
-              sellers.isEmpty
+              plants.isEmpty
                   ? const Center(
                       child: Text(
-                        "No sellers found",
+                        "No plants found",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -151,12 +167,12 @@ class PlantDetail extends StatelessWidget {
                       height: screenHeight * .12,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: sellers.length,
+                        itemCount: plants.length,
                         itemBuilder: (context, index) {
-                          final seller = sellers[index];
+                          final plant = plants[index];
                           return InkWell(
-                            onTap: () => Get.toNamed(SellerDetail.routeName,
-                                arguments: seller),
+                            onTap: () => Get.toNamed(PlantDetail.routeName,
+                                arguments: plant),
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: SizedBox(
@@ -165,20 +181,19 @@ class PlantDetail extends StatelessWidget {
                                   child: Center(
                                     child: ListTile(
                                       title: Text(
-                                        seller.name,
+                                        plant.name,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      subtitle: Text(seller.phoneNumber),
                                       leading: ClipRRect(
                                         borderRadius: BorderRadius.circular(10),
                                         child: CachedNetworkImage(
-                                          imageUrl: Api.baseUrl + seller.image,
+                                          imageUrl: Api.baseUrl + plant.image,
                                           placeholder: (context, url) =>
                                               Image.asset(Images.loadingGif),
                                           errorWidget: (context, url, error) =>
                                               Image.asset(
-                                            Images.placeHolder("seller"),
+                                            Images.placeHolder("plant"),
                                             fit: BoxFit.contain,
                                           ),
                                           width: screenHeight * .08,
@@ -206,7 +221,7 @@ class PlantDetail extends StatelessWidget {
           dashboardController.currentPageIndex.value = value;
           Get.offNamedUntil(Dashboard.routeName, (route) => false);
         },
-        currentIndex: 1,
+        currentIndex: 2,
         selectedItemColor: Theme.of(context).primaryColor,
         unselectedItemColor: Colors.grey,
         items: bottomNavItems,

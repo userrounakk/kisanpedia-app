@@ -7,6 +7,7 @@ import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
 import 'package:kisanpedia_app/pages/detail-pages/plant_detail.dart';
+import 'package:kisanpedia_app/pages/detail-pages/seller_detail.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -192,6 +193,9 @@ class Home extends StatelessWidget {
                             children: sellers.map(
                               (seller) {
                                 return InkWell(
+                                  onTap: () => Get.toNamed(
+                                      SellerDetail.routeName,
+                                      arguments: seller),
                                   child: Card(
                                     child: Padding(
                                       padding: const EdgeInsets.all(10.0),

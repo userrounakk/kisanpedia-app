@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
 import 'package:kisanpedia_app/models/seller.dart';
+import 'package:kisanpedia_app/pages/detail-pages/seller_detail.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -115,7 +117,7 @@ class _SellerPageState extends State<SellerPage> {
           ),
           child: InkWell(
             onTap: () {
-              // TODO: Navigate to seller detail page
+              Get.toNamed(SellerDetail.routeName, arguments: seller);
             },
             child: Padding(
               padding: const EdgeInsets.all(16.0),
