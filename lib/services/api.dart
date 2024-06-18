@@ -10,4 +10,8 @@ class Api {
   static Future getSellers() {
     return http.get(Uri.parse('$baseUrl/sellers'));
   }
+
+  static Future checkInternet() {
+    return http.get(Uri.parse('https://www.google.com'));
+  }
 }

@@ -5,6 +5,7 @@ import 'package:kisanpedia_app/controllers/plant_controller.dart';
 import 'package:kisanpedia_app/controllers/seller_controller.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
+import 'package:kisanpedia_app/pages/no_internet.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
 import 'package:kisanpedia_app/pages/splash-screen/intro.dart';
 import 'package:kisanpedia_app/pages/splash-screen/splash.dart';
@@ -56,6 +57,11 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: OnboardingScreen.routeName,
           page: () => const OnboardingScreen(),
+          transition: Transition.fadeIn,
+        ),
+        GetPage(
+          name: NoInternet.routeName,
+          page: () => const NoInternet(),
           transition: Transition.fadeIn,
         ),
       ],

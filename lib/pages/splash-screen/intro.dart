@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/controllers/plant_controller.dart';
@@ -10,6 +12,7 @@ import 'package:kisanpedia_app/helpers/spacer.dart';
 import 'package:kisanpedia_app/models/plant.dart';
 import 'package:kisanpedia_app/models/seller.dart';
 import 'package:kisanpedia_app/pages/dashboard.dart';
+import 'package:kisanpedia_app/pages/no_internet.dart';
 import 'package:kisanpedia_app/pages/onboarding/onboarding.dart';
 import 'package:kisanpedia_app/services/api.dart';
 import 'package:kisanpedia_app/widgets/text.dart';
@@ -24,6 +27,7 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  bool _isMounted = false;
   bool timerRunning = true;
   bool dataFetched = false;
   int sec = 0;
@@ -32,34 +36,51 @@ class _IntroScreenState extends State<IntroScreen> {
   final SellerController sellerController = Get.find<SellerController>();
   @override
   void initState() {
-    // _loadPlantData();
-    // _loadSellerData();
-    // updateTimer();
+    _isMounted = true;
     updateTimer();
     Future.wait([_loadPlantData(), _loadSellerData()]).then((_) {
-      setState(() {
-        dataFetched = true;
-        if (Get.isBottomSheetOpen ?? false) {
-          Get.back();
-        }
-      });
+      if (_isMounted) {
+        setState(() {
+          dataFetched = true;
+          if (Get.isBottomSheetOpen ?? false) {
+            Get.back();
+          }
+        });
+      }
     });
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _isMounted = false;
+    super.dispose();
+  }
+
   Future<void> _loadPlantData() async {
+    debugPrint("Loading plant data");
     try {
       var res = await Api.getPlants();
       plantController.setPlants(plantResponseFromJson(res.body).plant);
+      plantController.setError(false);
+    } on SocketException catch (e) {
+      if (e.osError?.errorCode == 101) {
+        Get.snackbar("Internet issue",
+            "Please check your internet connection and try again");
+        Get.offAllNamed(NoInternet.routeName);
+        return;
+      }
     } catch (e) {
       plantController.setError(true);
     }
   }
 
   Future<void> _loadSellerData() async {
+    debugPrint("Loading seller data");
     try {
       var res = await Api.getSellers();
       sellerController.setSellers(sellerResponseFromJson(res.body).seller);
+      sellerController.setError(false);
     } catch (e) {
       sellerController.setError(true);
     }
@@ -68,9 +89,11 @@ class _IntroScreenState extends State<IntroScreen> {
   void updateTimer() async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 1));
-    setState(() {
-      sec++;
-    });
+    if (_isMounted) {
+      setState(() {
+        sec++;
+      });
+    }
     // change the sec value to 10
     if (sec == 3) {
       if (!dataFetched) {
@@ -120,7 +143,9 @@ class _IntroScreenState extends State<IntroScreen> {
         redirect = Dashboard.routeName;
       }
       timerRunning = false;
-      setState(() {});
+      if (_isMounted) {
+        setState(() {});
+      }
     } else {
       updateTimer();
     }
