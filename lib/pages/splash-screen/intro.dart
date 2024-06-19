@@ -106,8 +106,7 @@ class _IntroScreenState extends State<IntroScreen> {
         sec++;
       });
     }
-    // TODO: change the sec value to 10
-    if (sec == 3) {
+    if (sec == 10) {
       if (!dataFetched) {
         Get.bottomSheet(
           Container(

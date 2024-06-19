@@ -42,12 +42,12 @@ class _NoInternetState extends State<NoInternet> {
       body: SizedBox(
         height: Dimension.getHeight(context),
         width: double.infinity,
-        child: Column(
+        child: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Icon(Icons.signal_wifi_off_outlined, size: 100, color: Colors.grey),
-            const Text(
+            Text(
               "No internet Connection.",
               style: TextStyle(
                 fontSize: 18,

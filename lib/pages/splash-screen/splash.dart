@@ -20,7 +20,7 @@ class _SplashState extends State<Splash> {
   }
 
   void navigateToHome() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     Get.offNamed(IntroScreen.routeName);
   }
 

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/helpers/colors/theme.dart';
 import 'package:kisanpedia_app/helpers/constants/onboarding.dart';

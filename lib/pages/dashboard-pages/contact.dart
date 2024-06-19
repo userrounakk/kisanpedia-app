@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:kisanpedia_app/helpers/dimension.dart';
 import 'package:kisanpedia_app/helpers/images/images.dart';
